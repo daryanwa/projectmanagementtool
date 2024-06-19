@@ -37,6 +37,7 @@ function LoginComponentNew() {
   useEffect(() => {
     setEmail("");
     setPassword("");
+    setError(null);
   }, [select]);
 
   return (
