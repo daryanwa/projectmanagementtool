@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { SignInFirebase, SignUpFirebase } from "../../services/userFirebase";
+import AuthForm from "./AuthForm";
 
 function LoginComponentNew() {
   const [select, setSelect] = useState<string>("login");
@@ -9,10 +10,9 @@ function LoginComponentNew() {
 
   const handleSignUp = async (event: React.FormEvent) => {
     event.preventDefault();
-    const signUpService = new SignUpFirebase(email, password);
+    const signUpService = new SignUpFirebase();
     try {
       await signUpService.signUp(email, password);
-      console.log("signup");
       setEmail("");
       setPassword("");
       setError(null);
@@ -21,12 +21,11 @@ function LoginComponentNew() {
     }
   };
 
-  const hadleSignIn = async (event: React.FormEvent) => {
+  const handleSignIn = async (event: React.FormEvent) => {
     event.preventDefault();
     const signInService = new SignInFirebase();
     try {
       await signInService.signIn(email, password);
-      console.log("URA LOGIN");
       setEmail("");
       setPassword("");
       setError(null);
@@ -34,6 +33,11 @@ function LoginComponentNew() {
       setError(err.message);
     }
   };
+
+  useEffect(() => {
+    setEmail("");
+    setPassword("");
+  }, [select]);
 
   return (
     <div className="bg-background min-h-screen flex justify-center">
@@ -62,55 +66,16 @@ function LoginComponentNew() {
             </button>
           </div>
 
-          <form className="flex flex-col ">
-            <div className="mt-4">
-              <div className=" relative flex flex-col text-lg font-normal">
-                <label className="block">Email</label>
-                <input
-                  type="email"
-                  name="email"
-                  onChange={(e) => setEmail(e.target.value)}
-                  value={email}
-                  placeholder="example@mail.com"
-                  className="  p-[calc(0.5em-1px)_calc(0.75em-1px)] text-lg h-[45px] bg-surface  outline-none rounded shadow-sm "
-                />
-              </div>
-            </div>
-            <div className="mt-4">
-              <div className="relative flex flex-col text-lg font-normal">
-                <label>Password</label>
-                <input
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  type="password"
-                  name="password"
-                  placeholder="Enter your password"
-                  className="p-[calc(0.5em-1px)_calc(0.75em-1px)] text-lg h-[45px] bg-surface outline-none rounded shadow-sm"
-                />
-              </div>
-            </div>
-            <button className=" min-h-auto min-w-40 mt-4 mb-6 items-start flex w-32 hover:text-primary font-semibold ">
-              {select === "login" ? <p>Forgot Password?</p> : <p></p>}
-            </button>
-
-            {select === "login" ? (
-              <button
-                onClick={hadleSignIn}
-                type="submit"
-                className="bg-secondary h-10 rounded hover:bg-slate-400 hover:shadow-sm font-bold shadow-md hover:bg-gradient-to-t  hover:from-white hover:to-slate-100"
-              >
-                Login{" "}
-              </button>
-            ) : (
-              <button
-                onClick={handleSignUp}
-                type="submit"
-                className="bg-secondary h-10 rounded hover:bg-slate-400 hover:shadow-sm font-bold shadow-md hover:bg-gradient-to-t  hover:from-white hover:to-slate-100"
-              >
-                SignUp{" "}
-              </button>
-            )}
-          </form>
+          <AuthForm
+            email={email}
+            setEmail={setEmail}
+            password={password}
+            setPassword={setPassword}
+            handleSignIn={handleSignIn}
+            handleSignUp={handleSignUp}
+            error={error}
+            select={select}
+          />
         </div>
       </div>
     </div>
