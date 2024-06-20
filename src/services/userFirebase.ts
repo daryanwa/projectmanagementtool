@@ -26,7 +26,7 @@ export class SignInFirebase implements ISignInFirebase {
   async signIn(email: string, password: string) {
     try {
       const auth = getAuth(app);
-      signInWithEmailAndPassword(auth, email, password);
+      await signInWithEmailAndPassword(auth, email, password);
     } catch (error: any) {
       throw new Error(error.message || "Error signing in");
     }

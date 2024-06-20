@@ -42,7 +42,7 @@ function LoginComponentNew() {
 
   return (
     <div className="bg-background min-h-screen flex justify-center">
-      <div className="flex w-full max-w-md  md:min-h-48  max-h-96 p-8  relative  bg-gradient-to-t from-blue-200 from-10% to-primary to-100%   rounded-lg  flex-grow-1 shadow-md mt-4 border-1 border-gray-100  ">
+      <div className="flex w-full max-w-md  md:min-h-48  h-max p-8  relative  bg-gradient-to-t from-blue-200 from-10% to-primary to-100%   rounded-lg  flex-grow-1 shadow-md mt-4 border-1 border-gray-100  ">
         <div className=" w-full ">
           <div className="flex justify-between ">
             <button
@@ -51,8 +51,7 @@ function LoginComponentNew() {
                 select === "login"
                   ? "underline underline-offset-8 decoration-amber-400 text-slate-100"
                   : "text-black"
-              }`}
-            >
+              }`}>
               Login
             </button>
             <button
@@ -61,8 +60,7 @@ function LoginComponentNew() {
                 select === "signup"
                   ? "underline underline-offset-8 decoration-amber-400 text-slate-100"
                   : "text-black"
-              }`}
-            >
+              }`}>
               Sign Up
             </button>
           </div>

@@ -63,7 +63,7 @@ const AuthForm: React.FC<AuthFormProps> = ({
       </div>
 
       {select === "login" ? (
-        <button className=" min-h-auto min-w-40 mt-4 mb-8 items-start flex w-32 hover:text-primary font-semibold ">
+        <button className=" min-h-auto min-w-40 mt-2 mb-2  items-start flex w-32 hover:text-primary font-semibold ">
           {" "}
           Forgot Password?{" "}
         </button>
@@ -75,16 +75,14 @@ const AuthForm: React.FC<AuthFormProps> = ({
         <button
           onClick={handleSignIn}
           type="submit"
-          className="bg-secondary mt-2 h-10 rounded hover:bg-slate-400 hover:shadow-sm font-bold shadow-md hover:bg-gradient-to-t  hover:from-white hover:to-slate-100"
-        >
+          className="bg-secondary mt-2 h-10 rounded hover:bg-slate-400 hover:shadow-sm font-bold shadow-md hover:bg-gradient-to-t  hover:from-white hover:to-slate-100">
           Login{" "}
         </button>
       ) : (
         <button
           onClick={handleSignUp}
           type="submit"
-          className="bg-secondary mt-2 h-10 rounded hover:bg-slate-400 hover:shadow-sm font-bold shadow-md hover:bg-gradient-to-t  hover:from-white hover:to-slate-100 "
-        >
+          className="bg-secondary mt-2 h-10 rounded hover:bg-slate-400 hover:shadow-sm font-bold shadow-md hover:bg-gradient-to-t  hover:from-white hover:to-slate-100 ">
           SignUp{" "}
         </button>
       )}
