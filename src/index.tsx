@@ -8,8 +8,4 @@ import { Provider } from "react-redux";
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
-root.render(
-  // <Provider>
-  <App />
-  // </Provider>
-);
+root.render(<App />);
