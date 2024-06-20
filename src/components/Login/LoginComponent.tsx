@@ -1,49 +1,27 @@
 import React, { useEffect, useState } from "react";
-import {
-  SaveUserData,
-  SignInFirebase,
-  SignUpFirebase,
-} from "../../services/userFirebase";
+import { SignInFirebase, SignUpFirebase } from "../../services/userFirebase";
 import AuthForm from "./AuthForm";
+import LoadingComponent from "../Loading/LoadingComponent";
+import { useSignUp, useSignIn } from "../../hooks/useAuth";
+import { SaveUserData } from "../../services/userSaveToDb";
 
 function LoginComponentNew() {
   const [select, setSelect] = useState<string>("login");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
+  const [isLoading, setLoading] = useState<boolean>(false);
+  const { signUp, error: signUpError } = useSignUp();
+  const { signIn, error: signInError } = useSignIn();
 
   const handleSignUp = async (event: React.FormEvent) => {
     event.preventDefault();
-    const signUpService = new SignUpFirebase();
-    const userDataSave = new SaveUserData();
-    try {
-      const userCred = await signUpService.signUp(email, password);
-      const user = await userCred.user;
-      const data = {
-        email: email,
-        role: "user",
-      };
-      await userDataSave.saveData(user.uid, data);
-    } catch (err: any) {
-      setError(err.message);
-    } finally {
-      setEmail("");
-      setPassword("");
-      setError(null);
-    }
+    await signUp(email, password);
   };
 
   const handleSignIn = async (event: React.FormEvent) => {
     event.preventDefault();
-    const signInService = new SignInFirebase();
-    try {
-      await signInService.signIn(email, password);
-      setEmail("");
-      setPassword("");
-      setError(null);
-    } catch (err: any) {
-      setError(err.message);
-    }
+    await signIn(email, password);
   };
 
   useEffect(() => {
@@ -63,8 +41,7 @@ function LoginComponentNew() {
                 select === "login"
                   ? "underline underline-offset-8 decoration-amber-400 text-slate-100"
                   : "text-black"
-              }`}
-            >
+              }`}>
               Login
             </button>
             <button
@@ -73,22 +50,24 @@ function LoginComponentNew() {
                 select === "signup"
                   ? "underline underline-offset-8 decoration-amber-400 text-slate-100"
                   : "text-black"
-              }`}
-            >
+              }`}>
               Sign Up
             </button>
           </div>
-
-          <AuthForm
-            email={email}
-            setEmail={setEmail}
-            password={password}
-            setPassword={setPassword}
-            handleSignIn={handleSignIn}
-            handleSignUp={handleSignUp}
-            error={error}
-            select={select}
-          />
+          {isLoading ? (
+            <LoadingComponent />
+          ) : (
+            <AuthForm
+              email={email}
+              setEmail={setEmail}
+              password={password}
+              setPassword={setPassword}
+              handleSignIn={handleSignIn}
+              handleSignUp={handleSignUp}
+              error={error}
+              select={select}
+            />
+          )}
         </div>
       </div>
     </div>
