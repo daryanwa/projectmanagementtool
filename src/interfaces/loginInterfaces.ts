@@ -13,5 +13,6 @@ export interface ISignInFirebase {
 
 export interface UserData {
   email: string;
+  password: string;
   role: string;
 }

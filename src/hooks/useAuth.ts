@@ -12,7 +12,7 @@ export const useSignUp = () => {
     try {
       const userCred = await signUpService.signUp(email, password);
       const user = userCred.user;
-      const data = { email, role: "user" };
+      const data = { email, password, role: "user" };
       await userDataSave.saveData(user.uid, data);
       localStorage.setItem("user", JSON.stringify(user)); // Save user in localStorage
       setError(null);

@@ -17,11 +17,19 @@ function LoginComponentNew() {
   const handleSignUp = async (event: React.FormEvent) => {
     event.preventDefault();
     await signUp(email, password);
+    // if (email === "") {
+    //   setLoading(true);
+    // }
+    // setLoading(false);
+    setError(signUpError);
   };
+
+  //signup error nado reshit with empty string
 
   const handleSignIn = async (event: React.FormEvent) => {
     event.preventDefault();
     await signIn(email, password);
+    setError(signInError);
   };
 
   useEffect(() => {
@@ -41,7 +49,8 @@ function LoginComponentNew() {
                 select === "login"
                   ? "underline underline-offset-8 decoration-amber-400 text-slate-100"
                   : "text-black"
-              }`}>
+              }`}
+            >
               Login
             </button>
             <button
@@ -50,7 +59,8 @@ function LoginComponentNew() {
                 select === "signup"
                   ? "underline underline-offset-8 decoration-amber-400 text-slate-100"
                   : "text-black"
-              }`}>
+              }`}
+            >
               Sign Up
             </button>
           </div>
