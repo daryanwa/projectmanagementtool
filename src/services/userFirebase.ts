@@ -6,8 +6,10 @@ import {
 import {
   ISignInFirebase,
   ISignUpFirebase,
+  UserData,
 } from "../interfaces/loginInterfaces";
-import { app } from "../api/firebase";
+import { app, db } from "../api/firebase";
+import { addDoc, collection, doc, setDoc } from "firebase/firestore";
 
 export class SignUpFirebase implements ISignUpFirebase {
   async signUp(email: string, password: string) {
@@ -16,7 +18,12 @@ export class SignUpFirebase implements ISignUpFirebase {
         throw new Error("Password should be at least 6 characters");
       }
       const auth = getAuth(app);
-      await createUserWithEmailAndPassword(auth, email, password);
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      return userCredential;
     } catch (error: any) {
       throw new Error(error.message || "Error signing up");
     }
@@ -29,6 +36,16 @@ export class SignInFirebase implements ISignInFirebase {
       await signInWithEmailAndPassword(auth, email, password);
     } catch (error: any) {
       throw new Error(error.message || "Error signing in");
+    }
+  }
+}
+
+export class SaveUserData {
+  async saveData(userId: string, data: UserData) {
+    try {
+      await setDoc(doc(db, "users", userId), data);
+    } catch (error: any) {
+      throw new Error(error.message);
     }
   }
 }

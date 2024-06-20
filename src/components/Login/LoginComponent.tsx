@@ -1,5 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { SignInFirebase, SignUpFirebase } from "../../services/userFirebase";
+import {
+  SaveUserData,
+  SignInFirebase,
+  SignUpFirebase,
+} from "../../services/userFirebase";
 import AuthForm from "./AuthForm";
 
 function LoginComponentNew() {
@@ -11,13 +15,21 @@ function LoginComponentNew() {
   const handleSignUp = async (event: React.FormEvent) => {
     event.preventDefault();
     const signUpService = new SignUpFirebase();
+    const userDataSave = new SaveUserData();
     try {
-      await signUpService.signUp(email, password);
+      const userCred = await signUpService.signUp(email, password);
+      const user = await userCred.user;
+      const data = {
+        email: email,
+        role: "user",
+      };
+      await userDataSave.saveData(user.uid, data);
+    } catch (err: any) {
+      setError(err.message);
+    } finally {
       setEmail("");
       setPassword("");
       setError(null);
-    } catch (err: any) {
-      setError(err.message);
     }
   };
 
@@ -51,7 +63,8 @@ function LoginComponentNew() {
                 select === "login"
                   ? "underline underline-offset-8 decoration-amber-400 text-slate-100"
                   : "text-black"
-              }`}>
+              }`}
+            >
               Login
             </button>
             <button
@@ -60,7 +73,8 @@ function LoginComponentNew() {
                 select === "signup"
                   ? "underline underline-offset-8 decoration-amber-400 text-slate-100"
                   : "text-black"
-              }`}>
+              }`}
+            >
               Sign Up
             </button>
           </div>

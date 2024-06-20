@@ -10,3 +10,8 @@ export interface ISignUpFirebase {
 export interface ISignInFirebase {
   signIn(email: string, password: string): void;
 }
+
+export interface UserData {
+  email: string;
+  role: string;
+}
