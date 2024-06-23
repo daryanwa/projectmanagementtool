@@ -16,15 +16,17 @@ function LoginComponentNew() {
 
   const handleSignUp = async (event: React.FormEvent) => {
     event.preventDefault();
-    await signUp(email, password);
-    // if (email === "") {
-    //   setLoading(true);
-    // }
-    // setLoading(false);
-    setError(signUpError);
+    try {
+      setLoading(true);
+      await signUp(email, password);
+      if (email != "" && password != "") setSelect("login");
+      setError(signUpError);
+    } catch (err: any) {
+      throw new Error(err);
+    } finally {
+      setLoading(false);
+    }
   };
-
-  //signup error nado reshit with empty string
 
   const handleSignIn = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -49,8 +51,7 @@ function LoginComponentNew() {
                 select === "login"
                   ? "underline underline-offset-8 decoration-amber-400 text-slate-100"
                   : "text-black"
-              }`}
-            >
+              }`}>
               Login
             </button>
             <button
@@ -59,8 +60,7 @@ function LoginComponentNew() {
                 select === "signup"
                   ? "underline underline-offset-8 decoration-amber-400 text-slate-100"
                   : "text-black"
-              }`}
-            >
+              }`}>
               Sign Up
             </button>
           </div>

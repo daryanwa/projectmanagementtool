@@ -1,12 +1,14 @@
 import React from "react";
 
 import "./App.css";
-import LoginSignupComponent from "./components/LoginSignupComponent";
+import LoginSignupComponent from "./components/Layout";
+import { Outlet } from "react-router-dom";
 
 function App() {
   return (
     <div>
-      <LoginSignupComponent />
+      {/* <LoginSignupComponent /> */}
+      <Outlet />
     </div>
   );
 }
