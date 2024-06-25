@@ -11,3 +11,7 @@ export class SaveUserData {
     }
   }
 }
+
+export class SaveNote {
+  async saveNote(data: string) {}
+}
