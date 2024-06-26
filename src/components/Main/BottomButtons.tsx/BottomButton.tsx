@@ -32,7 +32,6 @@ function BottomButton() {
       <button
         className="bg-gray-100 w-20 h-8 rounded-lg hover:bg-slate-200 transition-all "
         onClick={handleCreate}>
-        {" "}
         Create
       </button>
       {/* {allNotes.map((ges) => ges.userId)} */}
