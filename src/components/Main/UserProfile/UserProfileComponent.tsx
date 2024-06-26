@@ -3,7 +3,6 @@ import { db } from "../../../api/firebase";
 import { collection, DocumentData, getDocs } from "firebase/firestore";
 const UserProfileComponent = () => {
   const [user, setUser] = useState<DocumentData[] | null>(null);
-  const [logOut, setLogOut] = useState<boolean>(false);
 
   const getUsers = async (db: any) => {
     const usersCollection = collection(db, "users");
@@ -25,14 +24,16 @@ const UserProfileComponent = () => {
   }, []);
 
   return (
-    <div>
+    <>
       {user &&
         user?.map((userData: DocumentData, index: number) => (
-          <div onClick={() => setLogOut(!logOut)} key={index}>
-            {userData.email.slice(0, 1)}
+          <div className="z-100 flex justify-center items-center" key={index}>
+            <p className="absolute justify-center">
+              {userData.email.slice(0, 4)}..
+            </p>
           </div>
         ))}
-    </div>
+    </>
   );
 };
 
