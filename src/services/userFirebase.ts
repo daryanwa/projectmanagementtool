@@ -2,6 +2,7 @@ import {
   getAuth,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  signOut,
 } from "firebase/auth";
 import {
   ISignInFirebase,
@@ -41,6 +42,25 @@ export class SignInFirebase implements ISignInFirebase {
       return userCredential;
     } catch (error: any) {
       throw new Error(error.message || "Error signing in");
+    }
+  }
+}
+
+// export class SignOut {
+//   async signOutUser() {
+//     signOut(app)
+//   }
+// }
+
+export class UserDataFirebase {
+  async userId(db: any) {
+    try {
+      const usersCollection = collection(db, "users");
+      const userSnapshot = await getDocs(usersCollection);
+      const userList = userSnapshot.docs.map((doc) => doc.data());
+      return userList;
+    } catch (err: any) {
+      throw new Error(err.message);
     }
   }
 }

@@ -1,3 +1,5 @@
+import { NoteInterface } from "./noteInterfaces";
+
 export interface FormValues {
   email: string;
   password: string;
@@ -15,4 +17,5 @@ export interface UserData {
   email: string;
   password: string;
   role: string;
+  createdNotes?: NoteInterface[];
 }
