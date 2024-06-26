@@ -3,6 +3,7 @@ import MainComponents from "../components/Main/MainComponents";
 import PageNotFoundComponent from "../components/PageNotFound/PageNotFoundComponent";
 import Layout from "../components/Layout";
 import LoginComponent from "../components/Login/LoginComponent";
+import PrivateRoute from "./PrivateRoute";
 
 export const router = createBrowserRouter([
   {
@@ -12,7 +13,7 @@ export const router = createBrowserRouter([
   },
   {
     path: "main",
-    element: <MainComponents />,
+    element: <PrivateRoute element={<MainComponents />} />,
     errorElement: <PageNotFoundComponent />,
   },
 ]);
