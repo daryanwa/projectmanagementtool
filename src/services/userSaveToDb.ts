@@ -6,9 +6,12 @@ import {
   getDocs,
   addDoc,
   getDoc,
+  updateDoc,
+  arrayUnion,
 } from "firebase/firestore";
 import { db } from "../api/firebase";
 import { NoteInterface } from "../interfaces/noteInterfaces";
+import { set } from "firebase/database";
 
 export class SaveUserData {
   async saveData(userId: string, data: UserData) {
@@ -23,16 +26,7 @@ export class SaveUserData {
 export class SaveNote {
   async saveNote(userId: string, newNote: NoteInterface) {
     try {
-      const userRef = doc(db, "users", userId);
-      const userSnap = await getDoc(userRef);
-      if (userSnap.exists()) {
-        const userData = userSnap.data() as UserData;
-        const updatedNotes = userData.createdNotes
-          ? [...userData.createdNotes, newNote]
-          : [newNote];
-
-        await setDoc(userRef, { ...userData, createdNotes: updatedNotes });
-      }
+      await setDoc(doc(db, "notes", userId), newNote);
     } catch (error: any) {
       throw new Error(error.message);
     }

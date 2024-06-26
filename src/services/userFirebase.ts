@@ -46,12 +46,6 @@ export class SignInFirebase implements ISignInFirebase {
   }
 }
 
-// export class SignOut {
-//   async signOutUser() {
-//     signOut(app)
-//   }
-// }
-
 export class UserDataFirebase {
   async userId(db: any) {
     try {

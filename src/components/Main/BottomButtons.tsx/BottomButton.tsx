@@ -1,24 +1,24 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import NoteComponent from "../Note/NoteComponent";
-import { collection, query, where } from "firebase/firestore";
+import { collection, doc, getDoc, query, where } from "firebase/firestore";
 import { db } from "../../../api/firebase";
 import { SaveNote } from "../../../services/userSaveToDb";
 import { NoteInterface } from "../../../interfaces/noteInterfaces";
 import { UserDataFirebase } from "../../../services/userFirebase";
 import { getCurrentUserId } from "../../../api/getCurrentUser";
+import { UserData } from "../../../interfaces/loginInterfaces";
 
 function BottomButton() {
   const [allNotes, setAllNotes] = useState<NoteInterface[]>([]);
   const saveNoteButton = new SaveNote();
-  const userData = new UserDataFirebase();
-  const q = query(collection(db, "notes"), where("id", "==", "userId"));
 
   const handleCreate = async () => {
     const userId = await getCurrentUserId();
     const newNote: NoteInterface = {
       id: Date.now().toString(),
-      text: "Hello",
+      text: "Hello w",
     };
+
     try {
       await saveNoteButton.saveNote(userId, newNote);
       setAllNotes([...allNotes, newNote]);
@@ -34,7 +34,7 @@ function BottomButton() {
         onClick={handleCreate}>
         Create
       </button>
-      {/* {allNotes.map((ges) => ges.userId)} */}
+      {allNotes.map((ges) => ges.id)}
     </div>
   );
 }

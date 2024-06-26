@@ -17,5 +17,5 @@ export interface UserData {
   email: string;
   password: string;
   role: string;
-  createdNotes?: NoteInterface[];
+  notes?: NoteInterface[];
 }
