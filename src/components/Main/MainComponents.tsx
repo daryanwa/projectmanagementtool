@@ -5,9 +5,15 @@ import UserProfileComponent from "./UserProfile/UserProfileComponent";
 import NoteComponent from "./Note/NoteComponent";
 import BottomButton from "./BottomButtons.tsx/BottomButton";
 import { getAuth, signOut } from "firebase/auth";
+import { NoteInterface } from "../../interfaces/noteInterfaces";
+import { getCurrentUserId } from "../../api/getCurrentUser";
+import { SaveNote } from "../../services/userSaveToDb";
 
 function MainComponents() {
   const [logOut, setLogOut] = useState<boolean>(false);
+  const [allNotes, setAllNotes] = useState<NoteInterface[]>([]);
+  const saveNoteButton = new SaveNote();
+
   const handleSignOut = async () => {
     try {
       const auth = getAuth(app);
@@ -18,8 +24,55 @@ function MainComponents() {
     }
   };
 
+  const handleCreate = async (text: string) => {
+    const userId = await getCurrentUserId();
+    console.log(text);
+    const newNote: NoteInterface = {
+      id: Date.now().toString(),
+      text: text,
+    };
+    try {
+      await saveNoteButton.saveNote(userId, newNote);
+      // setAllNotes([...allNotes, newNote]);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  const handleCreateNote = async () => {
+    const userId = await getCurrentUserId();
+
+    const newNote: NoteInterface = {
+      id: Date.now().toString(),
+      text: "",
+    };
+    try {
+      await saveNoteButton.saveNote(userId, newNote);
+      setAllNotes([...allNotes, newNote]);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const fetchNote = async () => {
+    try {
+      const userId = await getCurrentUserId();
+      const noteCollection = collection(db, "notes", userId);
+      const notesSnapshot = await getDocs(noteCollection);
+      const notesList = notesSnapshot.docs.map(
+        (doc) => doc.data() as NoteInterface
+      );
+      setAllNotes(notesList);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchNote(); // Выполняем загрузку заметок при монтировании компонента
+  }, []);
+
   return (
-    <div className="bg-orange-200 min-h-screen ">
+    <div className="bg-orange-200 min-h-screen  ">
       <div>
         <div>
           <div
@@ -29,24 +82,21 @@ function MainComponents() {
               <UserProfileComponent />
             </div>
 
-            {logOut && (
-              <div className=" w-[3.1rem]  flex items-center  translate-y-11  h-16 border-b-2 border-l-2 border-r-2 border-emerald-700  rounded-b-3xl  bg-emerald-500 ustify-center text-center   ">
-                <div className=" mt-2 mb-2 text-white">
-                  <button
-                    onClick={handleSignOut}
-                    className="hover:bg-slate-600 transition-all w-[2.9rem]  rounded-md text-[0.72rem] p-1">
-                    Logout
-                  </button>
-                </div>
-              </div>
-            )}
+            <div className=" mt-2 mb-2 text-white">
+              <button
+                onClick={handleSignOut}
+                className="hover:bg-slate-600 transition-all w-[2.9rem]  rounded-md text-[0.72rem] p-1">
+                Logout
+              </button>
+            </div>
           </div>
         </div>
       </div>
-      <NoteComponent />
-      <BottomButton />
+
+      {allNotes.map((note) => (
+        <NoteComponent key={note.id} note={note} onSave={handleCreate} />
+      ))}
+      <BottomButton handleCreate={handleCreateNote} />
     </div>
   );
 }
-
-export default MainComponents;
