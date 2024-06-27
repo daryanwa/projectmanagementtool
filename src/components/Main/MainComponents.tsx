@@ -5,6 +5,7 @@ import UserProfileComponent from "./UserProfile/UserProfileComponent";
 import NoteComponent from "./Note/NoteComponent";
 import BottomButton from "./BottomButtons.tsx/BottomButton";
 import { getAuth, signOut } from "firebase/auth";
+import { calculateTeamFinanceReport } from "../../task";
 
 function MainComponents() {
   const [logOut, setLogOut] = useState<boolean>(false);
@@ -17,6 +18,7 @@ function MainComponents() {
       throw new Error(err.message);
     }
   };
+
   return (
     <div className="bg-orange-200 min-h-screen ">
       <div>
