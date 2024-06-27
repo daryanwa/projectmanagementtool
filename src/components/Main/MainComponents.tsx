@@ -81,22 +81,27 @@ function MainComponents() {
             <div className="flex justify-center items-center w-full h-full absolute ">
               <UserProfileComponent />
             </div>
-
-            <div className=" mt-2 mb-2 text-white">
-              <button
-                onClick={handleSignOut}
-                className="hover:bg-slate-600 transition-all w-[2.9rem]  rounded-md text-[0.72rem] p-1">
-                Logout
-              </button>
-            </div>
+            {logOut && (
+              <div className=" w-[3.1rem]  flex items-center  translate-y-11  h-16 border-b-2 border-l-2 border-r-2 border-emerald-700  rounded-b-3xl  bg-emerald-500 ustify-center text-center   ">
+                <div className=" mt-2 mb-2 text-white">
+                  <button
+                    onClick={handleSignOut}
+                    className="hover:bg-slate-600 transition-all w-[2.9rem]  rounded-md text-[0.72rem] p-1">
+                    Logout
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
         </div>
-      </div>
 
-      {allNotes.map((note) => (
-        <NoteComponent key={note.id} note={note} onSave={handleCreate} />
-      ))}
-      <BottomButton handleCreate={handleCreateNote} />
+        {allNotes.map((note) => (
+          <NoteComponent key={note.id} note={note} onSave={handleCreate} />
+        ))}
+        <BottomButton handleCreate={handleCreateNote} />
+      </div>
     </div>
   );
 }
+
+export default MainComponents;

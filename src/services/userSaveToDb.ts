@@ -26,7 +26,14 @@ export class SaveUserData {
 export class SaveNote {
   async saveNote(userId: string, newNote: NoteInterface) {
     try {
-      await setDoc(doc(db, "notes", userId), newNote);
+      const userNotesCollectionRef = collection(
+        db,
+        "notes",
+        userId,
+        "createdNotes"
+      );
+      const newNoteDocRef = doc(userNotesCollectionRef);
+      await setDoc(newNoteDocRef, newNote);
     } catch (error: any) {
       throw new Error(error.message);
     }
