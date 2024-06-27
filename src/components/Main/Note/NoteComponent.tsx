@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { NoteInterface } from "../../../interfaces/noteInterfaces";
 
 interface NoteProps {
@@ -8,8 +8,15 @@ interface NoteProps {
 
 const NoteComponent: React.FC<NoteProps> = ({ note, onSave }) => {
   const [text, setText] = useState<string>(note.text);
+
+  useEffect(() => {
+    setText(note.text);
+  }, [note]);
+
   const handleSave = () => {
-    onSave(text);
+    if (text !== note.text) {
+      onSave(text);
+    }
   };
   return (
     <div className="flex">
@@ -17,8 +24,7 @@ const NoteComponent: React.FC<NoteProps> = ({ note, onSave }) => {
         value={text}
         onChange={(e) => setText(e.target.value)}
         onBlur={handleSave}
-        className="border-4 min-w-[10] min-h-[12rem] bg-slate-300 m-8 border-gray-400 resize"
-      ></textarea>
+        className="border-4 min-w-[10] min-h-[12rem] bg-slate-300 m-8 border-gray-400 resize"></textarea>
     </div>
   );
 };
