@@ -13,6 +13,9 @@ module.exports = {
         textPrimary: "#333333",
         textSecondary: "#7F8C8D",
       },
+      screens: {
+        sm: "420px",
+      },
     },
   },
   plugins: [],

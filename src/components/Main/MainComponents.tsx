@@ -7,13 +7,13 @@ import BottomButton from "./BottomButtons.tsx/BottomButton";
 import { getAuth, signOut } from "firebase/auth";
 import { NoteInterface } from "../../interfaces/noteInterfaces";
 import { getCurrentUserId } from "../../api/getCurrentUser";
-import { SaveNote } from "../../services/userSaveToDb";
+import { SaveNote, SaveNoteRenameInFuture } from "../../services/userSaveToDb";
 
 function MainComponents() {
   const [logOut, setLogOut] = useState<boolean>(false);
   const [allNotes, setAllNotes] = useState<NoteInterface[]>([]);
   const saveNoteButton = new SaveNote();
-
+  const saveRename = new SaveNoteRenameInFuture();
   const handleSignOut = async () => {
     try {
       const auth = getAuth(app);
@@ -26,13 +26,17 @@ function MainComponents() {
 
   const handleCreate = async (text: string) => {
     const userId = await getCurrentUserId();
-    console.log(text);
+    // console.log(text);
+    // const newNote: NoteInterface = {
+    //   id: Date.now().toString(),
+    //   text: text,
+    // };
     const newNote: NoteInterface = {
-      id: Date.now().toString(),
+      id: await getCurrentUserId(),
       text: text,
     };
     try {
-      await saveNoteButton.saveNote(userId, newNote);
+      await saveRename.saveNote(userId);
       // setAllNotes([...allNotes, newNote]);
     } catch (err) {
       console.log(err);
@@ -42,7 +46,8 @@ function MainComponents() {
     const userId = await getCurrentUserId();
 
     const newNote: NoteInterface = {
-      id: Date.now().toString(),
+      // id: Date.now().toString(),
+      id: (await getCurrentUserId()).toString(),
       text: "",
     };
     try {
@@ -68,7 +73,7 @@ function MainComponents() {
   };
 
   useEffect(() => {
-    fetchNote(); // Выполняем загрузку заметок при монтировании компонента
+    fetchNote();
   }, []);
 
   return (
@@ -77,7 +82,8 @@ function MainComponents() {
         <div>
           <div
             onClick={() => setLogOut(!logOut)}
-            className=" border-2 rounded-full w-14 h-14 flex absolute m-7 justify-center items-center bg-emerald-500 hover:scale-125 transition-transform end-10 text-white font cursor-pointer  mt-4  border-emerald-700">
+            className=" border-2 rounded-full w-14 h-14 flex absolute m-7 justify-center items-center bg-emerald-500 hover:scale-125 transition-transform end-10 text-white font cursor-pointer  mt-4  border-emerald-700"
+          >
             <div className="flex justify-center items-center w-full h-full absolute ">
               <UserProfileComponent />
             </div>
@@ -86,7 +92,8 @@ function MainComponents() {
                 <div className=" mt-2 mb-2 text-white">
                   <button
                     onClick={handleSignOut}
-                    className="hover:bg-slate-600 transition-all w-[2.9rem]  rounded-md text-[0.72rem] p-1">
+                    className="hover:bg-slate-600 transition-all w-[2.9rem]  rounded-md text-[0.72rem] p-1"
+                  >
                     Logout
                   </button>
                 </div>
@@ -94,11 +101,17 @@ function MainComponents() {
             )}
           </div>
         </div>
-
-        {allNotes.map((note) => (
-          <NoteComponent key={note.id} note={note} onSave={handleCreate} />
-        ))}
-        <BottomButton handleCreate={handleCreateNote} />
+        <div className="flex flex-wrap">
+          {allNotes.map((note) => (
+            <div
+              key={note.id}
+              className="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 p-2"
+            >
+              <NoteComponent note={note} onSave={handleCreate} />
+            </div>
+          ))}
+          <BottomButton handleCreate={handleCreateNote} />
+        </div>
       </div>
     </div>
   );

@@ -39,3 +39,20 @@ export class SaveNote {
     }
   }
 }
+export class SaveNoteRenameInFuture {
+  async saveNote(userId: string) {
+    try {
+      const userNotesCollectionRef = collection(
+        db,
+        "notes",
+        userId,
+        "createdNotes"
+      );
+      const noteIdRef = doc(db, "notes", userId);
+      const newNoteDocRef = doc(userNotesCollectionRef);
+      await setDoc(newNoteDocRef, noteIdRef);
+    } catch (error: any) {
+      throw new Error(error.message);
+    }
+  }
+}
